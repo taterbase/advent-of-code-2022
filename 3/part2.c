@@ -10,7 +10,7 @@
 int main() {
 	int bytesRead, totalPrio, groupLine, foundBadge;
 	char letter;
-	long long map, lastMap, mask;
+	uint64_t map, lastMap, mask;
 
 	char chunk[BYTEWIDTH];
 	int appeared[DISTINCT];

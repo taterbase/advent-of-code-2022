@@ -10,7 +10,7 @@
 int main() {
 	int bytesRead, lineLength, seen, totalPrio;
 	char letter;
-	long long map, mask;
+	uint64_t map, mask;
 
 	char chunk[BYTEWIDTH];
 	int firstSeen[DISTINCT];
