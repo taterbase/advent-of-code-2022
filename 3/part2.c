@@ -15,8 +15,8 @@ int main() {
 	char chunk[BYTEWIDTH];
 	int appeared[DISTINCT];
 
-	map = lastMap = 0; 	// zero out bitmap
-	mask = 1;						// set default for mask
+	map = lastMap = 0; // zero out bitmap
+	mask = 1; // set default for mask
 
 	bytesRead = totalPrio = groupLine = foundBadge = 0;
 
@@ -27,16 +27,16 @@ int main() {
 			letter = chunk[i];
 			// Reset on newline
 			if (letter == '\n') {
-				if (groupLine == 2)
+				if (groupLine == 2) // end of group, reset
 					lastMap = map = foundBadge = 0;
 				else {
-					lastMap = map;
+					lastMap = map; // capture old map and reset cur map
 					map = 0;
 				}
 
-				groupLine = (groupLine + 1) % 3;
+				groupLine = (groupLine + 1) % 3; // groups of 3 only
 				continue;
-			} else if (foundBadge)
+			} else if (foundBadge) // we found the common letter, move on
 				continue;
 
 			// A-Z need to represent 27-52, adjust
@@ -51,14 +51,16 @@ int main() {
 
 			mask <<= letter;
 			switch(groupLine) {
-				case 0:
+				case 0: // building the first map
 					map |= mask;
 					break;
-				case 1:
+				case 1: // only capturing letters that were in the first map
 					if (lastMap & mask)
 						map |= mask;
 					break;
 				case 2:
+					// once we find a match our work is done
+					// increment prio and move on
 					if (lastMap & mask) {
 						totalPrio += letter;
 						foundBadge = 1;
