@@ -28,11 +28,9 @@ int main() {
 			letter = chunk[i];
 			// Reset on newline
 			if (letter == '\n') {
-				//printf("END OF LINE: %d %d\n", lineLength, seen);
 				for (int i = 0; i < seen; ++i) {
 					if ((firstSeen[appeared[i]-1] < lineLength / 2) &&
 							(lastSeen[appeared[i]-1] >= lineLength / 2)) {
-						//printf("WE FOUND IT\n");
 						totalPrio += appeared[i];
 						break;
 					} 
@@ -54,12 +52,9 @@ int main() {
 				continue;
 
 			mask <<= letter;
-			if (mask & map) {
-				//printf("We've already seen %c\n", chunk[i]);
+			if (mask & map)
 				lastSeen[letter-1] = lineLength - 1;
-			}
 			else {
-				//printf("Storing presence of %c\n", chunk[i]);
 				map |= mask;
 				appeared[seen++] = letter;
 				firstSeen[letter-1] = lastSeen[letter-1] = lineLength - 1;
