@@ -1,14 +1,14 @@
-/* Day 2 - Part 1
+/* Day 2 - Part 2
  *
  * Assess win rate of rock, paper scissor fights
  *
  * A,B,C = Opponent Rock,Paper,Scissors
- * X,Y,Z - My Rock,Paper,Scissors
+ * X,Y,Z - Lose, Draw, Win
  *
  * Total score is my shape (rock = 1, paper = 2, scissors = 3)
  * plus 6 if I win, 3 if I tie, and 0 if I lose
  *
- * Opponent on left, me on right
+ * Opponent on left, win condition on right
  */
 #include <stdio.h>
 
@@ -16,6 +16,14 @@
 
 int main() {
 	int bytesRead, score;
+
+	/* 
+	 * win and loss list reflect indexes for the corresponding
+	 * play when the opponent plays a move
+	 * rock(0) win = 2(paper), loss = 3(scissor)
+	 */
+	char win[] = {2, 3, 1};
+	char lose[] = {3, 1, 2};
 	char opp, me;
 	char chunk[BYTEWIDTH];
 
@@ -29,24 +37,20 @@ int main() {
 				case 'A':
 				case 'B':
 				case 'C':
-					opp = chunk[i] - '@';	// Set opposition to 1, 2 or 3
+					opp = chunk[i] - '@';	/* Set opponent value to 
+																	 1, 2, 3 (rock, paper, scissor) */
 					break;
-				case 'X':
-				case 'Y':
-				case 'Z':
-					me = chunk[i] - 'W';	// Set myself to 1, 2 or 3
-					score += me; 					// We always increment by the value of the shape
-
-					// The math for the shapes and subtraction
-					// make it easy to see wins and ties
-					switch(me - opp) {
-						case 0: 			// tie
-							score +=3;
-							break;
-						case 1: 			// scissor beats paper, paper beats rock
-						case -2: 			// rock beats scissor
-							score += 6;
-					}
+				case 'X': 							// LOSE
+					score += lose[opp-1];
+					break;
+				case 'Y':								// TIE
+					score +=3;
+					score += opp;
+					break;
+				case 'Z':								// WIN
+					score += 6;
+					score += win[opp-1];
+					break;
 			}
 		}
 
