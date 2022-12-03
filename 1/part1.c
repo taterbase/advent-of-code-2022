@@ -1,4 +1,4 @@
-/* Day 1
+/* Day 1 - Part 1
  *
  * process and calculate each elf's calories
  * foods separated by newlines
