@@ -3,8 +3,8 @@
  */
 #include <stdio.h>
 
-#define BOXBUDGET 20
-#define MAXSTACK 8
+#define BOXBUDGET 100
+#define MAXSTACK 10
 
 struct box {
 	char value;
@@ -37,24 +37,29 @@ void appendbox(struct box *top, struct box *new) {
 }
 
 void printstack(struct box *top) {
-	printf("%c\n", top->value);
+	printf("[%c]\n", top->value);
 	if (top->down != NULL)
 		printstack(top->down);
 }
 
 int main() {
-	char c, stackbuilt, curstack, boxesused, newline;
+	char c, stackbuilt, curstack, boxesused, newline, blanks, stacknum;
 	struct box *stacks[MAXSTACK];
 	struct boxpool pool = {0};
 
 	for(int i=0;i<MAXSTACK;++i)
 		stacks[i] = NULL;
 
-	curstack = stackbuilt = boxesused = newline = 0;
+	curstack = stackbuilt = boxesused = newline = blanks = stacknum = 0;
 
 	while(!stackbuilt) {
 		c = getchar();
 		if (c == '\n') {
+			// Keep track of the number of stacks we have
+			if (curstack > stacknum)
+				stacknum = curstack;
+
+			// There's a known blank space between the stacks and the moves
 			if (newline)
 				stackbuilt = 1;
 			else {
@@ -62,11 +67,18 @@ int main() {
 				curstack = 0; // reset stack pointer
 			}
 			continue;
+		} 
+
+		if (c == ' ' && ++blanks >= 4) {
+			++curstack;
+			blanks = 0;
 		}
 
+		// We know we're progressing beyond a new line
 		newline = 0;
 
 		if (c >= 'A' && c <= 'Z') {
+			blanks = 0; // reset blanks
 			struct box *b = getbox(&pool);
 			if (b == NULL) {
 				printf("Ran out of boxes\n");
@@ -86,7 +98,7 @@ int main() {
 
 	printf("Stack built\n");
 
-	for(int i = 0; i<MAXSTACK; ++i) {
+	for(int i = 0; i<stacknum; ++i) {
 		printf("Stack %d:\n", i);
 		printstack(stacks[i]);
 	}
