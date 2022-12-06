@@ -1,5 +1,5 @@
 /* 
- * Day 5 - Part 1
+ * Day 5 - Part 2
  */
 #include <stdio.h>
 
@@ -48,7 +48,7 @@ void printstack(struct box *top) {
 		printstack(top->down);
 }
 
-// Move boxes across stacks accordian style... lol
+// Move as a stack, not accordian
 void move(struct box *stacks[], int amount, int from, int to) {
 	// I'm just going to pass the stack numbers and let this
 	// function worry about turning them into indexes
@@ -57,6 +57,11 @@ void move(struct box *stacks[], int amount, int from, int to) {
 
 	struct box *leader = stacks[from];
 	struct box *acceptor = stacks[to];
+	struct box *tail = leader;
+
+	for (int i=0; i<amount; ++i) {
+		tail = tail->down;
+	}
 
 
 	// Ok if acceptor is NULL
