@@ -195,12 +195,6 @@ int main() {
 			break;
 	}
 
-
-	//move(stacks, 1, 2, 1);
-	//move(stacks, 3, 1, 3);
-	//move(stacks, 2, 2, 1);
-	//move(stacks, 1, 1, 2);
-
 	printf("After:\n");
 	for(int i = 0; i<stacknum; ++i) {
 		//printf("Stack %d:\n", i);

@@ -59,58 +59,17 @@ void move(struct box *stacks[], int amount, int from, int to) {
 	struct box *acceptor = stacks[to];
 	struct box *tail = leader;
 
-	for (int i=0; i<amount; ++i) {
+	for (int i=1; i<amount; ++i) {
 		tail = tail->down;
 	}
 
+	struct box *oldbase = tail->down;
+	tail->down = acceptor;
+	if (acceptor != NULL)
+		acceptor->up = tail;
 
-	// Ok if acceptor is NULL
-	if (leader->inverted)
-		leader->down = acceptor;
-	else
-		leader->up = acceptor;
-
-
-	if (acceptor != NULL) {
-		if (acceptor->inverted)
-			acceptor->down = leader;
-		else
-			acceptor->up = leader;
-	}
-
-	struct box *curbox = leader;
-	struct box *lastbox = NULL;
-	char inverted = 0;
-
-	// At the end of this for loop we'll be on the new top
-	// of the from stack
-	for(int i=0; i < amount; ++i) {
-		// Re..invert??
-		inverted = curbox->inverted;
-		curbox->inverted = !inverted;
-		lastbox = curbox;
-		if (inverted)
-			curbox = curbox->up;
-		else
-			curbox = curbox->down;
-	}
-
-
-	if (lastbox->inverted)
-		lastbox->down = NULL;
-	else
-		lastbox->up = NULL;
-
-	if (curbox != NULL) {
-		if (curbox->inverted) {
-			curbox->down = NULL;
-		} else {
-			curbox->up = NULL;
-		}
-	}
-
-	stacks[from] = curbox;
-	stacks[to] = lastbox;
+	stacks[to] = leader;
+	stacks[from]=oldbase;
 }
 
 int main() {
@@ -199,12 +158,6 @@ int main() {
 		if (c == EOF)
 			break;
 	}
-
-
-	//move(stacks, 1, 2, 1);
-	//move(stacks, 3, 1, 3);
-	//move(stacks, 2, 2, 1);
-	//move(stacks, 1, 1, 2);
 
 	printf("After:\n");
 	for(int i = 0; i<stacknum; ++i) {
