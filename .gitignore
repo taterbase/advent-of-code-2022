@@ -2,3 +2,5 @@
 *.swp
 *.obj
 *test
+*.pdb
+*.vs
