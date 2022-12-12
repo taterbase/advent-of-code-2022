@@ -84,7 +84,6 @@ struct block *push(struct window *w, struct block *b) {
 		w->back = b;
 
 	if (rblock != NULL && w->map[key(rblock->c)]) {
-		printf("removing %c\n", rblock->c);
 		if(--w->map[key(rblock->c)] == 0)
 			w->uniqs--;
 	}
@@ -118,7 +117,6 @@ int main() {
 		curblock->c = c;
 		// assign block to return from push onto window
 		curblock = push(&win, curblock);
-		printwindow(&win);
 		if (win.uniqs == UNIQS) {
 			printf("FOUND IT AT %d\n", win.processed);
 			break;
